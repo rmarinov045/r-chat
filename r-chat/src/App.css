@@ -26,3 +26,18 @@ body {
         transform: translateX(-10rem, 0);
     }
 }
+
+.userlist::-webkit-scrollbar, .msg-container::-webkit-scrollbar {
+    background-color: transparent;
+    width: 2px;
+}
+
+.userlist::-webkit-scrollbar-thumb, .msg-container::-webkit-scrollbar-thumb {
+    width: 2px;
+    border-radius: 20px;
+    background-color: #39ace7;
+}
+
+.active > li {
+    background-color: #39ace7;
+}

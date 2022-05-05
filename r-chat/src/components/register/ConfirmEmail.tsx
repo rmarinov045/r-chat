@@ -8,13 +8,24 @@ function ConfirmEmail() {
     const [errorMessage, setErrorMessage] = useState('')
     const [error, setError] = useState(false)
 
+    const [recentEmail, setRecentEmail] = useState(false)
+
     const user = useCallback(() => {
         return auth.currentUser
     }, [])
 
     const sendEmail = async (manual: boolean) => {
+
+        if (recentEmail) {
+            setTimeout(() => setRecentEmail(false), 5000)
+            setError(true)
+            setErrorMessage('Please wait 5 seconds before requesting again')
+            return
+        }
+
         try {
             await userAuth.sendVerificationEmail()
+            setRecentEmail(true)
             if (manual) {
                 setErrorMessage('Sent!')
                 setError(false)
@@ -33,7 +44,8 @@ function ConfirmEmail() {
     useEffect(() => {
         if (user()?.emailVerified) return
         sendEmail(false)
-    }, [user])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <main className='w-screen h-screen flex items-center justify-center'>

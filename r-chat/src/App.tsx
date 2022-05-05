@@ -18,7 +18,10 @@ function App() {
           <Route index={true} element={<PublicRoute component={<Register />} />}></Route>
           <Route path='confirm-email' element={<PublicRoute component={<ConfirmEmail />} />}></Route>
         </Route>
-        <Route path='/home' element={<PrivateRoute component={<Home />} />}></Route>
+        <Route path='/home'>
+          <Route index={true} element={<PrivateRoute component={<Home />} />}></Route>
+          <Route path=':userId' element={<PrivateRoute component={<Home />} />}></Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

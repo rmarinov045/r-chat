@@ -1,7 +1,7 @@
 import { auth } from '../firebase'
 import * as api from 'firebase/auth'
 
-const errorParser = (err: { message: string, code: string }) => {
+export const errorParser = (err: { message: string, code: string }) => {
 
     switch (err.code) {
         case 'auth/user-not-found':
@@ -33,19 +33,29 @@ const register = async (email: string, password: string) => {
     }
 }
 
-export const sendVerificationEmail = async () => {
+const sendVerificationEmail = async () => {
     try {
         if (auth.currentUser) {
             const response = await api.sendEmailVerification(auth.currentUser)
             return response
         }
-    } catch (error :any) {
-        throw new Error(error.code)
+    } catch (error: any) {
+        throw new Error(errorParser(error))
     }
+}
+
+const logout = async () => {
+try {
+    await api.signOut(auth) 
+} catch (error :any) {
+    throw new Error(errorParser(error));
+    
+}
 }
 
 export const userAuth = {
     login,
     register,
     sendVerificationEmail,
+    logout
 }
