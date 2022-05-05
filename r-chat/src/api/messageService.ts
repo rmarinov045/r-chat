@@ -37,8 +37,11 @@ const sendMessage = async (message: Message) => {
     }
 }
 
+const parseTimestamp = (timestamp :number) => new Date(timestamp).toDateString()
+
 export const messageAPI = {
-    sendMessage
+    sendMessage,
+    parseTimestamp,
 }
 
 export const queries = {

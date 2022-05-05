@@ -41,3 +41,8 @@ body {
 .active > li {
     background-color: #39ace7;
 }
+
+.active > li:hover {
+    background-color: #39ace7;
+    cursor: default;
+} 
