@@ -50,9 +50,27 @@ const getAllUsers = async () => {
 
 const getUserById = (userId: string) => query(usersCollection, where('user.id', '==', userId))
 
+const getUserByUserName = async (username :string) => {
+    const users :User[] = []
+
+    try {
+        const allUsers = await getDocs(usersCollection)
+
+        if (allUsers.empty) return []
+
+        allUsers.forEach(user => users.push(new User(user.get('user.email'), user.get('user.username'), user.get('user.id'))))
+
+        return users.filter(user => user.username.toLowerCase().trim().includes(username.toLowerCase().trim()))
+
+    } catch (error :any) {
+        throw new Error(errorParser(error))
+    }
+}
+
 export const userAPI = {
     postUser,
     getAllUsers,
+    getUserByUserName,
 }
 
 export const userQueries = {

@@ -9,7 +9,7 @@ function ChatWindow({ userId }: { [userId: string]: string }) {
 
   const messages = useMessages(userId) as MessageData[]  
 
-  const targetUser = useGetUser(userId)    
+  const targetUser = useGetUser(userId)
   
   return (
     <div className='w-full h-full flex flex-col'>

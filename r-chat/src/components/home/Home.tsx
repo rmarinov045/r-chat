@@ -36,11 +36,11 @@ function Home() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+    
   return (
     <main className='w-screen h-screen'>
       <section id='chat' className='flex w-5/6 h-full'>
-        <Userlist users={users} />
+        <Userlist setUsers={setUsers} users={users} />
         {userId && <ChatWindow userId={userId} />}
       </section>
       <Sidebar setError={setError} setErrorMessage={setErrorMessage} />
