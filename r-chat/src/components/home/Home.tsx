@@ -13,7 +13,7 @@ function Home() {
   const [errorMessage, setErrorMessage] = useState('')
   const [users, setUsers] = useState([] as UserData[])
 
-  const { userId } = useParams()
+  const { userId } = useParams()  
 
   const fetchUsers = useCallback(async () => {
     const usersList = await userAPI.getAllUsers()

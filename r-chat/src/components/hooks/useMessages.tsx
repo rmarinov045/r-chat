@@ -1,17 +1,21 @@
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { queries } from '../../api/messageService'
+import { auth } from '../../firebase'
 
 function useMessages(userId: string) {
 
-    const [sentMessages] = useCollectionData(queries.sent(userId)) || []
-    const [receivedMessages] = useCollectionData(queries.received(userId)) || []
+    const [messages, , error] = useCollectionData(queries.get(userId, auth.currentUser?.uid || ''))
+    
+    if (error) return []
 
-    if (sentMessages && receivedMessages) {
-        
-        return [...Object.values(sentMessages), ...Object.values(receivedMessages)].sort((a, b) => a.message.timestamp - b.message.timestamp)
-        
+    if (messages) {
+        return [...Object.values(messages)].sort((a, b) => a.message.timestamp - b.message.timestamp)
     }
+
     return []
+
+
+    // add error handling => @param useCollectionData returns error and loading states
 }
 
 export default useMessages

@@ -60,7 +60,7 @@ function Register() {
                         <label htmlFor="password">Confirm password:</label>
                         <input onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} value={formData.confirmPassword} type="password" name="confirm-password" id="confirm-password" placeholder='********' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
                         <button disabled={loading ? true : false} type="submit" className='w-2/3 mt-10 bg-primary rounded-3xl min-h-[2.5rem] font-bold transition-all ease-in-out 150 hover:bg-secondary'>
-                            {loading ? 'Please wait' : 'Register'}
+                            {loading ? 'Please wait...' : 'Register'}
                         </button>
                         <Link to='/'>
                             <p className='text-xs transition-all pb-2 ease-in-out 150 border-b-2 border-transparent hover:border-primary'>Already have an account? Go back!</p>

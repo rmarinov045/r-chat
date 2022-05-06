@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
 import { errorParser } from '../auth/auth'
 import { db } from '../firebase'
 
@@ -26,7 +26,7 @@ class User {
 
 const postUser = async (user: UserData) => {
     try {
-        await addDoc(usersCollection, {
+        await setDoc(doc(usersCollection, user.id), {
             user
         })
     } catch (error: any) {

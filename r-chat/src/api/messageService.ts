@@ -1,8 +1,9 @@
-import { addDoc, collection, query, where } from "firebase/firestore"
+import { addDoc, collection, collectionGroup, doc, endAt, limit, limitToLast, orderBy, query, setDoc, where } from "firebase/firestore"
 import { errorParser } from "../auth/auth"
-import { auth, db } from "../firebase"
+import { db } from "../firebase"
 
-export const messagesCollection = collection(db, 'messages')
+export const chatsCollection = collection(db, 'chats')
+export const messagesCollection = collectionGroup(db, 'messages')
 
 export interface MessageData {
     message: {
@@ -28,16 +29,24 @@ export class Message {
 }
 
 const sendMessage = async (message: Message) => {
+
+    const docRef = message.senderId < message.receiverId ? message.senderId + message.receiverId : message.receiverId + message.senderId
+
     try {
-        await addDoc(messagesCollection, {
-            message
+        await setDoc(doc(collection(db, 'chats'), `${docRef}`), {
+            messages: await addDoc(collection(db, `chats/${docRef}/messages`), { message: message, cid: docRef }),
+            subscribers: { user1: message.receiverId, user2: message.senderId },
+            lastUpdatedAt: message.timestamp,
+            lastSenderId: message.senderId,
+            cid: docRef
         })
+
     } catch (error: any) {
         throw new Error(errorParser(error))
     }
 }
 
-const parseTimestamp = (timestamp :number) => new Date(timestamp).toDateString()
+const parseTimestamp = (timestamp: number) => new Date(timestamp).toDateString() + ' ' + new Date(timestamp).toLocaleTimeString()
 
 export const messageAPI = {
     sendMessage,
@@ -45,6 +54,6 @@ export const messageAPI = {
 }
 
 export const queries = {
-    sent: (userId: string) => query(messagesCollection, where('message.senderId', '==', auth.currentUser?.uid), where('message.receiverId', '==', userId)),
-    received: (userId: string) => query(messagesCollection, where('message.senderId', '==', userId), where('message.receiverId', '==', auth.currentUser?.uid)),
+    get: (userId: string, currentUserId: string) => query(messagesCollection, where('cid', '==', `${userId < currentUserId ? userId + currentUserId : currentUserId + userId}`), limit(25), orderBy('message.timestamp', 'desc')),
+    getPrev: (userId: string, currentUserId: string, firstTimestamp: number) => query(messagesCollection, where('cid', '==', `${userId < currentUserId ? userId + currentUserId : currentUserId + userId}`), limitToLast(25), orderBy('message.timestamp', 'asc'), endAt(firstTimestamp - 1))
 }

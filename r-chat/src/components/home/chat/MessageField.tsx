@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react'
+import React, { SyntheticEvent, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { messageAPI } from '../../../api/messageService'
 import { auth } from '../../../firebase'
@@ -7,21 +7,25 @@ function MessageField() {
 
   const [message, setMessage] = useState('')
 
+  const prevMsg = useRef('')
+
   const { userId } = useParams()
 
   async function handleSubmit(e: SyntheticEvent) {
     e.preventDefault()
     const senderId = auth.currentUser?.uid
 
-    if (!senderId || !userId) return 
+    if (!senderId || !userId) return
     // add error handling
 
     try {
+      prevMsg.current = message
+      setMessage('')
       const messageObject = { message: message, senderId: senderId, receiverId: userId, timestamp: Date.now() }
       await messageAPI.sendMessage(messageObject)
-      setMessage('')
     } catch (error: any) {
-        console.log(error);
+      setMessage(prevMsg.current)
+      console.log(error);
     }
   }
 
