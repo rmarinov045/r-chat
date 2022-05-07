@@ -16,6 +16,7 @@ function Home() {
   const { userId } = useParams()  
 
   const fetchUsers = useCallback(async () => {
+    // add pagination here as well
     const usersList = await userAPI.getAllUsers()
      setUsers([...usersList.filter(user => user.id !== auth.currentUser?.uid)])
   }, [])
@@ -41,7 +42,7 @@ function Home() {
     <main className='w-screen h-screen'>
       <section id='chat' className='flex w-5/6 h-full'>
         <Userlist setUsers={setUsers} users={users} />
-        {userId && <ChatWindow userId={userId} />}
+        {userId ? <ChatWindow userId={userId} /> : <div className='h-5/6 w-5/6 bg-chat bg-no-repeat bg-center'></div>}
       </section>
       <Sidebar setError={setError} setErrorMessage={setErrorMessage} />
       <Toast message={errorMessage} error={error} />

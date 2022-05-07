@@ -31,7 +31,7 @@ function MessageContainer({ messages, targetUser, setMessages, setLoading, loadi
         setLoading(false)
     }, [firstTimestamp, setMessages, setLoading])
 
-    async function handleScroll(e: SyntheticEvent) {
+    function handleScroll(e: SyntheticEvent) {
 
         if (messages.length === 0) return
 

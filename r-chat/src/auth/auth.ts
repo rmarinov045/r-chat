@@ -1,6 +1,8 @@
 import { auth } from '../firebase'
 import * as api from 'firebase/auth'
 
+import { userAPI } from '../api/userService'
+
 export const errorParser = (err: { message: string, code: string }) => {
 
     switch (err.code) {
@@ -44,18 +46,45 @@ const sendVerificationEmail = async () => {
     }
 }
 
-const logout = async () => {
-try {
-    await api.signOut(auth) 
-} catch (error :any) {
-    throw new Error(errorParser(error));
-    
+const resetPassword = async () => {
+    try {
+        if (auth.currentUser && auth.currentUser.email) {
+            const response = await api.sendPasswordResetEmail(auth, auth.currentUser.email)
+            return response
+        }
+    } catch (error: any) {
+        throw new Error(errorParser(error))
+    }
 }
+
+const editUsername = async (newUsername: string, userId: string) => {
+    try {
+        if (auth.currentUser) {
+            const response = await api.updateProfile(auth.currentUser, { displayName: newUsername })
+            
+            await userAPI.updateDbUsername(newUsername, userId)
+
+            return response
+        }
+    } catch (error: any) {
+        throw new Error(error)
+    }
+}
+
+const logout = async () => {
+    try {
+        await api.signOut(auth)
+    } catch (error: any) {
+        throw new Error(errorParser(error));
+
+    }
 }
 
 export const userAuth = {
     login,
     register,
     sendVerificationEmail,
-    logout
+    logout,
+    resetPassword,
+    editUsername,
 }

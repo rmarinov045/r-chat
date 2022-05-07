@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore'
+import { collection, doc, getDocs, limit, query, setDoc, updateDoc, where } from 'firebase/firestore'
 import { errorParser } from '../auth/auth'
 import { db } from '../firebase'
 
@@ -34,10 +34,21 @@ const postUser = async (user: UserData) => {
     }
 }
 
+const updateDbUsername = async (newUsername: string, userId: string) => {
+    try {
+        await updateDoc(doc(db, `users/${userId}`), { 'user.username': newUsername })
+    } catch (error: any) {
+        throw new Error(error)
+    }
+}
+
+const userQuery = query(usersCollection, limit(25))
+
 const getAllUsers = async () => {
     const users: User[] = []
+
     try {
-        const usersSnapshot = await getDocs(usersCollection)
+        const usersSnapshot = await getDocs(userQuery)
 
         if (usersSnapshot.empty) return []
 
@@ -50,8 +61,8 @@ const getAllUsers = async () => {
 
 const getUserById = (userId: string) => query(usersCollection, where('user.id', '==', userId))
 
-const getUserByUserName = async (username :string) => {
-    const users :User[] = []
+const getUserByUserName = async (username: string) => {
+    const users: User[] = []
 
     try {
         const allUsers = await getDocs(usersCollection)
@@ -62,7 +73,7 @@ const getUserByUserName = async (username :string) => {
 
         return users.filter(user => user.username.toLowerCase().trim().includes(username.toLowerCase().trim()))
 
-    } catch (error :any) {
+    } catch (error: any) {
         throw new Error(errorParser(error))
     }
 }
@@ -71,8 +82,10 @@ export const userAPI = {
     postUser,
     getAllUsers,
     getUserByUserName,
+    updateDbUsername,
 }
 
 export const userQueries = {
     getUserById,
+    userQuery,
 }

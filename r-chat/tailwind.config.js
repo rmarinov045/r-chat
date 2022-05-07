@@ -10,6 +10,9 @@ module.exports = {
         'tertiary': '#414c50',
         'dark': '#2d383c',
         'darker': '#192428'
+      },
+      backgroundImage: {
+        'chat': "url('assets/chat.svg')"
       }
     },
   },
