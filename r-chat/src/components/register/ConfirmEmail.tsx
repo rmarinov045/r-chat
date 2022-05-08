@@ -55,9 +55,9 @@ function ConfirmEmail() {
 
     return (
         <main className='w-screen h-screen flex items-center justify-center'>
-            <section className='w-1/2 h-1/2 flex flex-col items-center justify-center rounded-xl bg-tertiary text-white gap-10'>
+            <section className='w-5/6 md:w-1/2 h-1/2 flex flex-col items-center justify-center rounded-xl bg-tertiary text-white gap-10'>
                 <div className='h-2/3 flex flex-col gap-10 items-center justify-center p-4'>
-                    <h1 className='text-6xl'>Thank you!</h1>
+                    <h1 className='text-3xl md:text-6xl'>Thank you!</h1>
                     <p>A verification email has been sent to your inbox.</p>
                     <Link to='/home' className='bg-primary p-3 rounded transition-all ease-in-out 150 hover:bg-secondary'>Now take me to the homepage!</Link>
                 </div>

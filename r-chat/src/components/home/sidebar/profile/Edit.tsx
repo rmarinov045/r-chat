@@ -23,12 +23,19 @@ function Edit({ opened, handler, userId, setError, setErrorMessage }: { opened: 
 
         try {
             await handler(newUsername, userId)
+            setError(false)
+            setErrorMessage('Username changed successfully')
             setLoading(false)
             opened(false)
+
+            setTimeout(() => setErrorMessage(''), 3000)
+
         } catch (error: any) {
             setLoading(false)
             setError(true)
             setErrorMessage(errorParser(error))
+
+            setTimeout(() => setErrorMessage(''), 3000)
         }
     }
 

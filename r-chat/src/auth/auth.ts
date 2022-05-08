@@ -69,7 +69,7 @@ const sendVerificationEmail = async () => {
         if (auth.currentUser) {
             await api.sendEmailVerification(auth.currentUser)
         }
-    } catch (error: any) {
+    } catch (error: any) {        
         throw new Error(errorParser(error))
     }
 }

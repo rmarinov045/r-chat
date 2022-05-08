@@ -10,11 +10,9 @@ import { userQueries } from '../../api/userService'
 function useGetUser(userId :string) {    
     const [userCollection, , error] = useCollectionData(userQueries.getUserById(userId))
     
-    if (error) return null
+    if (error || !userCollection || userCollection?.length === 0) return null    
     
-    if (userCollection) return userCollection[0].user
-
-    // add error handling
+    return userCollection[0].user
     
 }
 

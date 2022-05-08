@@ -42,7 +42,7 @@ function Login() {
     return (
         <main className='h-screen w-screen'>
             <section className='w-full h-full flex items-center justify-center'>
-                <div className='h-1/2 w-1/2 text-white flex flex-col justify-center gap-20'>
+                <div className='h-1/2 w-full md:w-1/2 lg:w-1/3 text-white flex flex-col justify-center gap-20'>
                     <h1 className='text-4xl font-bold self-center'>Login in to rChat!</h1>
                     <form onSubmit={(e) => handleSubmit(e)} className='flex flex-col w-full h-full gap-10 items-center'>
                         <input autoComplete='email' onChange={(e) => setFormData({ ...formData, email: e.target.value })} value={formData.email} type="email" name="email" id="email" placeholder='john@doe.com' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />

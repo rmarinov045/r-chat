@@ -39,10 +39,10 @@ function Home() {
   }, [])
 
   return (
-    <main className='w-screen h-screen'>
-      <section id='chat' className='flex w-5/6 h-full'>
+    <main className='w-screen h-[90vh] md:h-screen'>
+      <section id='chat' className='flex w-full md:w-5/6 h-full'>
         <Userlist setUsers={setUsers} users={users} />
-        {userId ? <ChatWindow isError={setError} setErrorMessage={setErrorMessage} userId={userId} /> : <div className='h-5/6 w-5/6 bg-chat bg-no-repeat bg-center'></div>}
+        {userId ? <ChatWindow isError={setError} setErrorMessage={setErrorMessage} userId={userId} /> : <div className='hidden md:block h-5/6 w-5/6 bg-chat bg-no-repeat bg-center'></div>}
       </section>
       <Sidebar setError={setError} setErrorMessage={setErrorMessage} />
       <Toast message={errorMessage} error={error} />
