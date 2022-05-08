@@ -19,4 +19,4 @@ Features:
 1. email: tester2@rchat.com
 2. password: tester123
 
-Live demo @ r-chat01.netlify.app
+Live demo @ https://r-chat01.netlify.app
