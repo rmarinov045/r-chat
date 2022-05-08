@@ -1,2 +1,15 @@
 # r-chat
-React and Firebase chat application
+
+Realtime chat app, built with React && Firebase.
+
+Test credentials:
+
+# User 1
+1. email: tester1@rchat.com
+2. password: tester123
+
+# User 2
+1. email: tester2@rchat.com
+2. password: tester123
+
+Live demo <a href="r-chat01.netlify.app" target="_blank">HERE</a>
