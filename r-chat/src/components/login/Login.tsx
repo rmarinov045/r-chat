@@ -45,8 +45,8 @@ function Login() {
                 <div className='h-1/2 w-1/2 text-white flex flex-col justify-center gap-20'>
                     <h1 className='text-4xl font-bold self-center'>Login in to rChat!</h1>
                     <form onSubmit={(e) => handleSubmit(e)} className='flex flex-col w-full h-full gap-10 items-center'>
-                        <input onChange={(e) => setFormData({ ...formData, email: e.target.value })} value={formData.email} type="email" name="email" id="email" placeholder='john@doe.com' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
-                        <input onChange={(e) => setFormData({ ...formData, password: e.target.value })} value={formData.password} type="password" name="password" id="password" placeholder='********' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
+                        <input autoComplete='email' onChange={(e) => setFormData({ ...formData, email: e.target.value })} value={formData.email} type="email" name="email" id="email" placeholder='john@doe.com' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
+                        <input autoComplete='current-password' onChange={(e) => setFormData({ ...formData, password: e.target.value })} value={formData.password} type="password" name="password" id="password" placeholder='********' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
                         <button disabled={loading ? true : false} type="submit" className='w-2/3 bg-primary rounded-3xl min-h-[2.5rem] font-bold transition-all ease-in-out 150 hover:bg-secondary'>
                             {loading ? 'Logging in...' : 'Sign in'}
                         </button>

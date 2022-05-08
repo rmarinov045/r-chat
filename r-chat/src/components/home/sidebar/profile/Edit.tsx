@@ -1,6 +1,7 @@
 import React, { Dispatch, SyntheticEvent, useState } from 'react'
+import { errorParser } from '../../../../auth/auth'
 
-function Edit({ opened, handler, userId }: { opened: Dispatch<boolean>, handler: Function, userId: string }) {
+function Edit({ opened, handler, userId, setError, setErrorMessage }: { opened: Dispatch<boolean>, handler: Function, userId: string, setError: Dispatch<boolean>, setErrorMessage: Dispatch<string> }) {
 
     const [loading, setLoading] = useState(false)
     const [newUsername, setNewUsername] = useState('')
@@ -15,19 +16,21 @@ function Edit({ opened, handler, userId }: { opened: Dispatch<boolean>, handler:
         setLoading(true)
 
         if (!newUsername) {
-            // add error handling
+            setError(true)
+            setErrorMessage('Please enter your new username')
+            return
         }
 
         try {
             await handler(newUsername, userId)
             setLoading(false)
+            opened(false)
         } catch (error: any) {
             setLoading(false)
-            console.log(error);
+            setError(true)
+            setErrorMessage(errorParser(error))
         }
     }
-
-    // recheck with new user (old ones have invalid IDs => check if the DB function handles the field change correctly)
 
     return (
         <form onSubmit={(e) => handleSubmit(e)} className='w-full flex flex-col gap-2 flex-grow items-center justify-center'>

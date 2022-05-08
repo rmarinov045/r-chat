@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { userAuth } from '../../auth/auth'
 import { auth } from '../../firebase'
 import Toast from '../utils/Toast'
@@ -9,24 +9,31 @@ function ConfirmEmail() {
     const [error, setError] = useState(false)
 
     const [recentEmail, setRecentEmail] = useState(false)
+    const [emailSent, setEmailSent] = useState(false)
 
-    const user = useCallback(() => {
-        return auth.currentUser
-    }, [])
+    const navigate = useNavigate()
+    
+    const user = auth.currentUser
 
-    const sendEmail = async (manual: boolean) => {
+    if (!user) {
+        navigate('/')
+    }
 
+    const sendEmail = useCallback(async (isManualReq :boolean) => {
+        
         if (recentEmail) {
             setTimeout(() => setRecentEmail(false), 5000)
             setError(true)
             setErrorMessage('Please wait 5 seconds before requesting again')
+            setTimeout(() => setErrorMessage(''), 5000)
             return
         }
 
         try {
             await userAuth.sendVerificationEmail()
+            setEmailSent(true)
             setRecentEmail(true)
-            if (manual) {
+            if (isManualReq) {
                 setErrorMessage('Sent!')
                 setError(false)
 
@@ -39,13 +46,12 @@ function ConfirmEmail() {
             setErrorMessage(error.message)
             setError(true)
         }
-    }
+    }, [recentEmail])
 
     useEffect(() => {
-        if (user()?.emailVerified) return
+        if (user?.emailVerified || emailSent) return
         sendEmail(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [user, sendEmail, emailSent])
 
     return (
         <main className='w-screen h-screen flex items-center justify-center'>

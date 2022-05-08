@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { Dispatch, useState } from 'react'
 import Profile from './Profile'
 
-function ProfileNavButton() {
+function ProfileNavButton({ setError, setErrorMessage }: { setError: Dispatch<boolean>, setErrorMessage: Dispatch<string> }) {
 
     const [profileOpened, setProfileOpened] = useState(false)
 
@@ -13,7 +13,7 @@ function ProfileNavButton() {
                 </svg>
             </div>
 
-            {profileOpened && <Profile />}
+            {profileOpened && <Profile setError={setError} setErrorMessage={setErrorMessage} />}
         </>
     )
 }

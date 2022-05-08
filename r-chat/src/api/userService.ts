@@ -1,8 +1,15 @@
 import { collection, doc, getDocs, limit, query, setDoc, updateDoc, where } from 'firebase/firestore'
-import { errorParser } from '../auth/auth'
 import { db } from '../firebase'
 
+import { errorParser } from '../auth/auth'
+
 export const usersCollection = collection(db, 'users')
+/**
+ * References entire users collection with a set limit of 25
+ */
+const userQuery = query(usersCollection, limit(25))
+const getUserById = (userId: string) => query(usersCollection, where('user.id', '==', userId))
+
 
 export interface UserData {
     email: string,
@@ -11,18 +18,19 @@ export interface UserData {
 }
 
 class User {
-
-    email: string
-    username: string
-    id: string
-
-    constructor(email: string, username: string, id: string) {
+    constructor(public email: string, public username: string, public id: string) {
         this.email = email
         this.username = username
         this.id = id
     }
-
 }
+
+/**
+ * Posts user to Firestore
+ * @param user User Object
+ * @returns void on success
+ * @throws if write fails
+ */
 
 const postUser = async (user: UserData) => {
     try {
@@ -34,6 +42,14 @@ const postUser = async (user: UserData) => {
     }
 }
 
+/**
+ * Updates user's username in Firestore
+ * @param newUsername username to be set
+ * @param userId ID of the current user
+ * @returns void on success
+ * @throws if write fails
+ */
+
 const updateDbUsername = async (newUsername: string, userId: string) => {
     try {
         await updateDoc(doc(db, `users/${userId}`), { 'user.username': newUsername })
@@ -42,7 +58,12 @@ const updateDbUsername = async (newUsername: string, userId: string) => {
     }
 }
 
-const userQuery = query(usersCollection, limit(25))
+
+/**
+ * Reads all users from Firestore
+ * @returns array of users
+ * @throws if read fails
+ */
 
 const getAllUsers = async () => {
     const users: User[] = []
@@ -59,7 +80,13 @@ const getAllUsers = async () => {
     }
 }
 
-const getUserById = (userId: string) => query(usersCollection, where('user.id', '==', userId))
+
+/**
+ * Reads users by passed username
+ * @param username username to search for
+ * @returns array of matched users
+ * @throws if read fails
+ */
 
 const getUserByUserName = async (username: string) => {
     const users: User[] = []
@@ -84,6 +111,12 @@ export const userAPI = {
     getUserByUserName,
     updateDbUsername,
 }
+
+/**
+ * Firestore queries used by getCollectionData hook
+ * @getUserById queries single user by ID
+ * @userQuery queries all users with a set limit of 25
+ */
 
 export const userQueries = {
     getUserById,

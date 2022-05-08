@@ -1,8 +1,8 @@
 import { addDoc, collection, collectionGroup, doc, endAt, limit, limitToLast, orderBy, query, setDoc, where } from "firebase/firestore"
-import { errorParser } from "../auth/auth"
 import { db } from "../firebase"
 
-export const chatsCollection = collection(db, 'chats')
+import { errorParser } from "../auth/auth"
+
 export const messagesCollection = collectionGroup(db, 'messages')
 
 export interface MessageData {
@@ -15,18 +15,20 @@ export interface MessageData {
 }
 
 export class Message {
-    message: string
-    senderId: string
-    receiverId: string
-    timestamp: number
-
-    constructor(message: string, senderId: string, receiverId: string, timestamp: number) {
+    constructor(public message: string, public senderId: string, public receiverId: string, public timestamp: number) {
         this.message = message
         this.senderId = senderId
         this.receiverId = receiverId
         this.timestamp = timestamp
     }
 }
+
+/**
+ * Posts message to DB
+ * @param message - Message object to be posted
+ * @returns void 
+ * @throws if writing to DB fails
+ */
 
 const sendMessage = async (message: Message) => {
 
@@ -46,12 +48,24 @@ const sendMessage = async (message: Message) => {
     }
 }
 
+/**
+ * Parses user-friendly timestamp from the DB timestamp
+ * @param timestamp - number timestamp from DB
+ * @returns stringified user-friendly timestamp
+ */
+
 const parseTimestamp = (timestamp: number) => new Date(timestamp).toDateString() + ' ' + new Date(timestamp).toLocaleTimeString()
 
 export const messageAPI = {
     sendMessage,
     parseTimestamp,
 }
+
+/**
+ * Firestore queries for useCollectionData hook
+ * @get 25 most recent messages
+ * @getPrev 25 previous messages - compared to passed timestamp
+ */
 
 export const queries = {
     get: (userId: string, currentUserId: string) => query(messagesCollection, where('cid', '==', `${userId < currentUserId ? userId + currentUserId : currentUserId + userId}`), limit(25), orderBy('message.timestamp', 'desc')),

@@ -4,13 +4,15 @@ import { auth } from '../firebase'
 import Spinner from './utils/Spinner'
 
 function PublicRoute({ component }: { [component: string]: ReactElement }) {
-    const navigate = useNavigate()
+    const navigate = useNavigate()    
 
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
-        auth.onAuthStateChanged(user => {
-            if (user) {
+
+        auth.onAuthStateChanged(user => {            
+
+            if (user) {                                
                 navigate('/home')
                 return
             }

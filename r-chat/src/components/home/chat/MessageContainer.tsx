@@ -1,9 +1,13 @@
-import { getDocs } from 'firebase/firestore'
 import React, { Dispatch, SyntheticEvent, useCallback, useEffect, useRef } from 'react'
+
+import { getDocs } from 'firebase/firestore'
+import { auth } from '../../../firebase'
+
 import { MessageData, queries } from '../../../api/messageService'
 import { UserData } from '../../../api/userService'
-import { auth } from '../../../firebase'
+
 import LoadingSpinner from '../../utils/LoadingSpinner'
+
 import ChatHeader from './ChatHeader'
 import Message from './Message'
 
@@ -15,18 +19,18 @@ function MessageContainer({ messages, targetUser, setMessages, setLoading, loadi
     let firstTimestamp = messages.length && messages[0].message.timestamp
 
     const fetchPrevMessages = useCallback(async (targetUserId: string) => {
-        const result: any[] = []
-        
-        const messagesSnapshot = await getDocs(queries.getPrev(targetUserId, auth.currentUser?.uid || '', firstTimestamp))
-        messagesSnapshot.forEach(m => result.push(m.data()))
+        const result: MessageData[] = []
 
-        if (result.length === 0 ) {
+        const messagesSnapshot = await getDocs(queries.getPrev(targetUserId, auth.currentUser?.uid || '', firstTimestamp))
+        messagesSnapshot.forEach(msg => result.push(msg.data() as MessageData))
+
+        if (result.length === 0) {
             setLoading(false)
             return
         }
         setLoading(true)
 
-        setMessages((prev: MessageData[]) => [...result, ...prev].sort((a, b) => a.message.timestamp - b.message.timestamp))
+        setMessages((prev: MessageData[]) => [...result, ...prev].sort((a: MessageData, b: MessageData) => a.message.timestamp - b.message.timestamp))
 
         setLoading(false)
     }, [firstTimestamp, setMessages, setLoading])
@@ -36,6 +40,7 @@ function MessageContainer({ messages, targetUser, setMessages, setLoading, loadi
         if (messages.length === 0) return
 
         const el = e.target as HTMLDivElement
+        
         if (el.scrollTop === 0) {
             fetchPrevMessages(targetUser.id)
         }

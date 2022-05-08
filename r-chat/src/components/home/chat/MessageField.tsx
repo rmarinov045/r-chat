@@ -1,9 +1,10 @@
-import React, { SyntheticEvent, useRef, useState } from 'react'
+import React, { Dispatch, SyntheticEvent, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { messageAPI } from '../../../api/messageService'
+import { errorParser } from '../../../auth/auth'
 import { auth } from '../../../firebase'
 
-function MessageField() {
+function MessageField({ isError, setErrorMessage }: { isError: Dispatch<boolean>, setErrorMessage: Dispatch<string> }) {
 
   const [message, setMessage] = useState('')
 
@@ -15,17 +16,26 @@ function MessageField() {
     e.preventDefault()
     const senderId = auth.currentUser?.uid
 
-    if (!senderId || !userId) return
-    // add error handling
+    if (!senderId || !userId) {
+      isError(true)
+      setErrorMessage('An error occured. Please reload the app and login again.')
+      return
+    }
 
     try {
+
       prevMsg.current = message
       setMessage('')
+
       const messageObject = { message: message, senderId: senderId, receiverId: userId, timestamp: Date.now() }
       await messageAPI.sendMessage(messageObject)
+
     } catch (error: any) {
+
       setMessage(prevMsg.current)
-      console.log(error);
+      
+      isError(true)
+      setErrorMessage(errorParser(error))
     }
   }
 

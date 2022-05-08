@@ -36,8 +36,8 @@ function Register() {
 
         try {
             const newUser = await userAuth.register(formData.email, formData.password)
-            await userAPI.postUser({ email: formData.email, username: formData.username, id: newUser.user.uid })
-            navigate('confirm-email')
+            await userAPI.postUser({ email: formData.email, username: formData.username, id: newUser.user.uid })                        
+            navigate('/confirm-email')
         } catch (error: any) {
             setErrorMessage(error.message)
             setLoading(false)
@@ -56,9 +56,9 @@ function Register() {
                         <label htmlFor="password">Username:</label>
                         <input onChange={(e) => setFormData({ ...formData, username: e.target.value })} value={formData.username} type="username" name="username" id="username" placeholder='John' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
                         <label htmlFor="password">Password:</label>
-                        <input onChange={(e) => setFormData({ ...formData, password: e.target.value })} value={formData.password} type="password" name="password" id="password" placeholder='********' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
+                        <input autoComplete='new-password' onChange={(e) => setFormData({ ...formData, password: e.target.value })} value={formData.password} type="password" name="password" id="password" placeholder='********' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
                         <label htmlFor="password">Confirm password:</label>
-                        <input onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} value={formData.confirmPassword} type="password" name="confirm-password" id="confirm-password" placeholder='********' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
+                        <input autoComplete='new-password' onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} value={formData.confirmPassword} type="password" name="confirm-password" id="confirm-password" placeholder='********' className='w-2/3 min-h-[2.5rem] bg-tertiary rounded-3xl px-4 outline-none border-2 border-transparent focus:border-primary transition-all ease-in-out 150' />
                         <button disabled={loading ? true : false} type="submit" className='w-2/3 mt-10 bg-primary rounded-3xl min-h-[2.5rem] font-bold transition-all ease-in-out 150 hover:bg-secondary'>
                             {loading ? 'Please wait...' : 'Register'}
                         </button>
