@@ -24,6 +24,15 @@ export class Message {
 }
 
 /**
+ * Lexicographically compares sender and receiver IDs and generates ID for the new Firestore document, composed of both IDs
+ * @param senderId ID of user, sending the message
+ * @param receiverId ID of user, receiving the mssage
+ * @returns generated DB ID 
+ */
+
+export const dbIdGenerator = (senderId :string, receiverId :string) => senderId < receiverId ? senderId + receiverId : receiverId + senderId
+
+/**
  * Posts message to DB
  * @param message - Message object to be posted
  * @returns void 
@@ -32,7 +41,7 @@ export class Message {
 
 const sendMessage = async (message: Message) => {
 
-    const docRef = message.senderId < message.receiverId ? message.senderId + message.receiverId : message.receiverId + message.senderId
+    const docRef = dbIdGenerator(message.senderId, message.receiverId)
 
     try {
         await setDoc(doc(collection(db, 'chats'), `${docRef}`), {
