@@ -45,7 +45,7 @@ function Profile({ setError, setErrorMessage }: { setError: Dispatch<boolean>, s
 
     return (
         <>
-            {user && <section className='absolute flex flex-col -translate-x-3/4 rounded-xl min-h-[10rem] max-h-fit min-w-[15rem] max-w-[15rem] bg-tertiary'>
+            {user && <section className='absolute flex flex-col -translate-x-3/4 rounded-xl min-h-[10rem] max-h-fit min-w-[15rem] max-w-[15rem] bg-dark'>
                 <div className='h-1/2 w-full p-4 flex items-center justify-center'>
                     <p className='max-w-full text-center'>Hi, <span className='text-primary break-words'>{user.username}</span> !</p>
                 </div>

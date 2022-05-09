@@ -17,7 +17,7 @@ function Login() {
 
     const navigate = useNavigate()
 
-    async function handleSubmit(e :SyntheticEvent) {
+    async function handleSubmit(e: SyntheticEvent) {
         e.preventDefault()
         setLoading(true)
 
@@ -31,7 +31,7 @@ function Login() {
         try {
             await userAuth.login(formData.email, formData.password)
             navigate('/home')
-        } catch(error :any) {                        
+        } catch (error: any) {
             setErrorMessage(error.message)
             setLoading(false)
             return
@@ -41,6 +41,7 @@ function Login() {
 
     return (
         <main className='h-screen w-screen'>
+
             <section className='w-full h-full flex items-center justify-center'>
                 <div className='h-1/2 w-full md:w-1/2 lg:w-1/3 text-white flex flex-col justify-center gap-20'>
                     <h1 className='text-4xl font-bold self-center'>Login in to rChat!</h1>
@@ -54,6 +55,13 @@ function Login() {
                             <p className='text-xs transition-all pb-2 ease-in-out 150 border-b-2 border-transparent hover:border-primary'>Don't have an account yet?</p>
                         </Link>
                     </form>
+                    <div className='text-xs flex flex-col gap-2 text-center'>
+                        <h2>This is an educational project. Here are two accounts, which you may use:</h2>
+                        <ol>
+                            <li><span className='text-primary font-bold text-sm'>Email:</span> tester1@rchat.com <span className='text-primary font-bold text-sm'>Password:</span> tester123</li>
+                            <li><span className='text-primary font-bold text-sm'>Email:</span> tester2@rchat.com <span className='text-primary font-bold text-sm'>Password:</span> tester123</li>
+                        </ol>
+                    </div>
                 </div>
             </section>
             {errorMessage && <Toast message={errorMessage} error={true} />}
