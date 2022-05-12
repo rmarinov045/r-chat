@@ -84,7 +84,7 @@ const getAllUsers = async () => {
 /**
  * Reads users by passed username
  * @param username username to search for
- * @returns array of matched users
+ * @returns array of matched users (or empty array)
  * @throws if read fails
  */
 

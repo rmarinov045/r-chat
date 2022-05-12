@@ -51,7 +51,6 @@ const sendMessage = async (message: Message) => {
             lastSenderId: message.senderId,
             cid: docRef
         })
-
     } catch (error: any) {
         throw new Error(errorParser(error))
     }
