@@ -4,7 +4,7 @@ import { UserData } from '../../../api/userService'
 
 function ChatHeader({ targetUser }: { targetUser: UserData }) {
 
-    const { userId } = useParams()
+    const { userId } = useParams()    
 
     return (
         <div className='w-full min-h-[2rem] p-2 px-4 bg-dark text-white flex justify-between'>
