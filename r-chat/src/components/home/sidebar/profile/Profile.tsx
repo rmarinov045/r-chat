@@ -12,14 +12,14 @@ function Profile({ setError, setErrorMessage }: { setError: Dispatch<boolean>, s
 
     if (!user) return null
 
-    function handlePasswordReset() {        
+    function handlePasswordReset() {
         try {
             profileHandlers.resetPassword()
             setError(false)
             setErrorMessage('Password reset email sent successfully')
 
             setTimeout(() => setErrorMessage(''), 3000)
-        } catch (error :any) {            
+        } catch (error: any) {
             setError(true)
             setErrorMessage('An error occured. Please try again later.')
 
@@ -28,14 +28,14 @@ function Profile({ setError, setErrorMessage }: { setError: Dispatch<boolean>, s
     }
 
     function handleVerificationEmail() {
-        
+
         try {
             profileHandlers.sendVerificationEmail()
             setError(false)
             setErrorMessage('Confirmation email sent successfully')
 
             setTimeout(() => setErrorMessage(''), 3000)
-        } catch (error :any) {            
+        } catch (error: any) {
             setError(true)
             setErrorMessage('An error occured. Please try again later.')
 
