@@ -33,7 +33,7 @@ function Register() {
             setLoading(false)
             return
         }
-
+        
         try {
             const newUser = await userAuth.register(formData.email, formData.password)
             await userAPI.postUser({ email: formData.email, username: formData.username, id: newUser.user.uid })                        
