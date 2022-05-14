@@ -40,7 +40,7 @@ function MessageContainer({ messages, targetUser, setMessages, setLoading, loadi
         if (messages.length === 0) return
 
         const el = e.target as HTMLDivElement
-        
+
         if (el.scrollTop === 0) {
             fetchPrevMessages(targetUser.id)
         }
@@ -55,7 +55,7 @@ function MessageContainer({ messages, targetUser, setMessages, setLoading, loadi
     return (
         <>
             <ChatHeader targetUser={targetUser} />
-            <div onScroll={(e) => handleScroll(e)} className='msg-container w-full h-5/6 bg-tertiary p-10 overflow-y-scroll overflow-x-hidden flex flex-col gap-2'>
+            <div data-testid='msg-container' onScroll={(e) => handleScroll(e)} className='msg-container w-full h-5/6 bg-tertiary p-10 overflow-y-scroll overflow-x-hidden flex flex-col gap-2'>
                 {loading ? <LoadingSpinner /> : messages.length > 0 ? messages.map(message => <Message message={message.message.message} isOwn={auth.currentUser?.uid === message.message.senderId} timestamp={message.message.timestamp} key={message.message.timestamp} />) : <div className='mx-auto text-white'>No messages yet. Be the first to write!</div>}
                 <div ref={chatBottomElement}></div>
             </div>

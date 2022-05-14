@@ -22,6 +22,10 @@ function MessageField({ isError, setErrorMessage }: { isError: Dispatch<boolean>
       return
     }
 
+    if (!message) {
+      return
+    }
+
     try {
 
       prevMsg.current = message
@@ -33,7 +37,7 @@ function MessageField({ isError, setErrorMessage }: { isError: Dispatch<boolean>
     } catch (error: any) {
 
       setMessage(prevMsg.current)
-      
+
       isError(true)
       setErrorMessage(errorParser(error))
     }

@@ -34,7 +34,7 @@ function ChatWindow({ userId, isError, setErrorMessage }: { userId: string, isEr
     if (messagesList.length > messages.length || lastMessage.message.timestamp > messages[messages.length - 1].message.timestamp) {
       setMessages(messagesList)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messagesList?.length])
 
   return (
