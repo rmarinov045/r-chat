@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
 import Spinner from './utils/Spinner'
 
-function PrivateRoute({ component } :{component: ReactElement}) {
+function PrivateRoute({ component }: { component: ReactElement }) {
     const navigate = useNavigate()
 
     const [loaded, setLoaded] = useState(false)
@@ -16,7 +16,7 @@ function PrivateRoute({ component } :{component: ReactElement}) {
             }
             setLoaded(true)
         })
-        
+
         return () => setLoaded(false)
     }, [navigate])
 

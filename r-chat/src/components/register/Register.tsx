@@ -36,7 +36,7 @@ function Register() {
 
         try {
             const newUser = await userAuth.register(formData.email, formData.password)
-            await userAPI.postUser({ email: formData.email, username: formData.username, id: newUser.user.uid })                        
+            await userAPI.postUser({ email: formData.email, username: formData.username || '', id: newUser.user.uid })
             navigate('/confirm-email')
         } catch (error: any) {
             setErrorMessage(error.message)

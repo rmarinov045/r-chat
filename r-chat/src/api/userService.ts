@@ -17,7 +17,7 @@ export interface UserData {
     id: string,
 }
 
-class User {
+export class User {
     constructor(public email: string, public username: string, public id: string) {
         this.email = email
         this.username = username
@@ -84,7 +84,7 @@ const getAllUsers = async () => {
 /**
  * Reads users by passed username
  * @param username username to search for
- * @returns array of matched users
+ * @returns array of matched users (or empty array)
  * @throws if read fails
  */
 

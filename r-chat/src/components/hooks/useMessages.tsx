@@ -14,14 +14,11 @@ function useMessages(userId: string) {
     
     if (error) return null
 
-    if (messages) {
+    if (messages && messages.length > 0) {
         return [...Object.values(messages)].sort((a, b) => a.message.timestamp - b.message.timestamp)
     }
 
     return []
-
-
-    // add error handling => @param useCollectionData returns error and loading states
 }
 
 export default useMessages

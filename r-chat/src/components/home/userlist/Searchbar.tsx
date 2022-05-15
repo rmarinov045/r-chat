@@ -14,8 +14,8 @@ function Searchbar({ setUsers, loading }: { setUsers: Function, loading: Dispatc
     setSearchQuery(e.target.value)
   }
 
-  useEffect(() => {
-    if (debouncedSearch) {
+  useEffect(() => {    
+    if (debouncedSearch) {      
       setUsers([])
       userAPI.getUserByUserName(debouncedSearch).then(users => setUsers(users.filter(x => x.id !== auth.currentUser?.uid))).catch(error => console.log(error))
       setTimeout(() => loading(false), 250)

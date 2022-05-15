@@ -55,7 +55,7 @@ function Login() {
                             <p className='text-xs transition-all pb-2 ease-in-out 150 border-b-2 border-transparent hover:border-primary'>Don't have an account yet?</p>
                         </Link>
                     </form>
-                    <div className='text-xs flex flex-col gap-2 text-center'>
+                    <div className='text-xs flex flex-col gap-2 text-center px-2'>
                         <h2>This is an educational project. Here are two accounts, which you may use:</h2>
                         <ol>
                             <li><span className='text-primary font-bold text-sm'>Email:</span> tester1@rchat.com <span className='text-primary font-bold text-sm'>Password:</span> tester123</li>
