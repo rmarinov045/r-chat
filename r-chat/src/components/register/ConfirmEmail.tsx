@@ -33,7 +33,7 @@ function ConfirmEmail() {
             await userAuth.sendVerificationEmail()
             setEmailSent(true)
             setRecentEmail(true)
-            if (isManualReq) {
+            if (isManualReq) {                
                 setErrorMessage('Sent!')
                 setError(false)
 

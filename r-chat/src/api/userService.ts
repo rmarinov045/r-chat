@@ -17,7 +17,7 @@ export interface UserData {
     id: string,
 }
 
-class User {
+export class User {
     constructor(public email: string, public username: string, public id: string) {
         this.email = email
         this.username = username

@@ -62,15 +62,16 @@ const register = async (email: string, password: string) => {
 /**
  * Sends verification email to currently signed in user
  * @returns void
+ * @throws if sending failed
  */
 
 const sendVerificationEmail = async () => {
-    try {
-        if (auth.currentUser) {
+    if (auth.currentUser) {
+        try {
             await api.sendEmailVerification(auth.currentUser)
+        } catch (error: any) {
+            throw new Error(errorParser(error))
         }
-    } catch (error: any) {        
-        throw new Error(errorParser(error))
     }
 }
 
@@ -80,12 +81,12 @@ const sendVerificationEmail = async () => {
  */
 
 const resetPassword = async () => {
-    try {
-        if (auth.currentUser && auth.currentUser.email) {
+    if (auth.currentUser && auth.currentUser.email) {
+        try {
             await api.sendPasswordResetEmail(auth, auth.currentUser.email)
+        } catch (error: any) {
+            throw new Error(errorParser(error))
         }
-    } catch (error: any) {
-        throw new Error(errorParser(error))
     }
 }
 
@@ -97,14 +98,14 @@ const resetPassword = async () => {
  */
 
 const editUsername = async (newUsername: string, userId: string) => {
-    try {
-        if (auth.currentUser) {
+    if (auth.currentUser) {
+        try {
             await api.updateProfile(auth.currentUser, { displayName: newUsername })
-            
+
             await userAPI.updateDbUsername(newUsername, userId)
+        } catch (error: any) {
+            throw new Error(error)
         }
-    } catch (error: any) {
-        throw new Error(error)
     }
 }
 

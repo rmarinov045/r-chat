@@ -1,4 +1,5 @@
-import { setDoc } from 'firebase/firestore'
+import * as firestore from 'firebase/firestore'
+import { Message } from '../messageService'
 import * as messageService from '../messageService'
 
 jest.mock('../../firebase', () => {
@@ -19,7 +20,6 @@ jest.mock('firebase/auth', () => {
 
 jest.mock('firebase/firestore', () => {
     return {
-        // ...jest.requireActual('firebase/firestore'),
         collection: jest.fn(),
         query: jest.fn(),
         where: jest.fn(),
@@ -50,7 +50,19 @@ describe('sendMessage unit tests', () => {
 
     it('Writes to DB with valid args', async () => {
         await messageService.messageAPI.sendMessage(mockMessage)
-        expect(setDoc).toHaveBeenCalled()
+        expect(firestore.setDoc).toHaveBeenCalled()
+    })
+    it('Handles errors', async () => {
+        (firestore.setDoc as jest.Mock) = jest.fn().mockImplementationOnce(() => {
+            throw new Error()
+        })
+
+        try {
+            await messageService.messageAPI.sendMessage(mockMessage)
+        } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
+            expect(error).toBeTruthy()
+        }
     })
 })
 
@@ -59,4 +71,10 @@ describe('parseTimestamp unit tests', () => {
         const expected = 'Mon May 09 2022 18:11:05'
         expect(messageService.messageAPI.parseTimestamp(1652109065277)).toEqual(expected)
     })
+})
+
+describe('Message class unit tests', () => {
+    const actual = new Message('test', '1', '2', 2)
+    const expected = { message: 'test', senderId: '1', receiverId: '2', timestamp: 2 }
+    expect(actual).toEqual(expected)
 })

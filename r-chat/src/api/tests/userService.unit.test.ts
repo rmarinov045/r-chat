@@ -39,6 +39,8 @@ let mockGetDocs = { empty: false, forEach: jest.fn() }
 const mockUser = { email: 'test@test.bg', id: '123', username: 'testUsername' }
 
 describe('postUser unit tests', () => {
+    afterEach(() => jest.clearAllMocks())
+
     it('Calls firestore setDoc method on success', async () => {
         await userService.userAPI.postUser(mockUser)
         expect(fb.setDoc).toHaveBeenCalled()
@@ -47,9 +49,23 @@ describe('postUser unit tests', () => {
         const actual = await userService.userAPI.postUser(mockUser)
         expect(actual).toBeUndefined()
     })
+    it('Handles errors', async () => {
+        (fb.setDoc as jest.Mock) = jest.fn().mockImplementationOnce(() => {
+            throw new Error()
+        })
+
+        try {
+            await userService.userAPI.postUser(mockUser)
+        } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
+            expect(error).toBeTruthy()
+        }
+    })
 })
 
 describe('updateDbUsername unit tests', () => {
+    afterEach(() => jest.clearAllMocks())
+
     it('Calls firestore updateDoc method on success', async () => {
         await userService.userAPI.updateDbUsername('test', '1')
         expect(fb.updateDoc).toHaveBeenCalled()
@@ -58,9 +74,22 @@ describe('updateDbUsername unit tests', () => {
         const actual = await userService.userAPI.updateDbUsername('test', '1')
         expect(actual).toBeUndefined()
     })
+    it('Handles errors', async () => {
+        (fb.updateDoc as jest.Mock) = jest.fn().mockImplementationOnce(() => {
+            throw new Error()
+        })
+
+        try {
+            await userService.userAPI.updateDbUsername('test', '1')
+        } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
+            expect(error).toBeTruthy()
+        }
+    })
 })
 
 describe('getAllUsers unit tests', () => {
+    afterEach(() => jest.clearAllMocks())
 
     it('Calls forEach method on received array on success', async () => {
         await userService.userAPI.getAllUsers()
@@ -78,6 +107,7 @@ describe('getAllUsers unit tests', () => {
 })
 
 describe('getUserByUserName unit tests', () => {
+    afterEach(() => jest.clearAllMocks())
 
     it('Calls forEach method on received array on success', async () => {
         await userService.userAPI.getUserByUserName('test')
@@ -91,5 +121,15 @@ describe('getUserByUserName unit tests', () => {
     it('Returns empty array if no users', async () => {
         const users = await userService.userAPI.getUserByUserName('test')
         expect(users).toHaveLength(0)
+    })
+})
+
+describe('User class unit tests', () => {
+    afterEach(() => jest.clearAllMocks())
+
+    it('Creates instance of class with correct props', () => {
+        const actual = new userService.User('test@test.com', 'username', '1')
+        const expected = { email: 'test@test.com', username: 'username', id: '1' }
+        expect(actual).toEqual(expected)
     })
 })
